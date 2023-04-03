@@ -36,7 +36,7 @@ export MY_QUAY_USER=mkovarik
 
 To enable PipelineAsCode integration you need to set `PIPELINESASCODE` env variable to `1` and also have to have set GitHub credentials in your `./hack/preview.env`.
 One may use GitHub PipelineAsCode application or webhook.
-To use GitHub application set `PAC_GITHUB_APP_PRIVATE_KEY` and `PAC_GITHUB_APP_ID` in your `./hack/preview.env`.
+To use GitHub application set `PAC_GITHUB_APP_PRIVATE_KEY`,  `PAC_GITHUB_APP_ID` and `PAC_GITHUB_APP_WEBHOOK_SECRET` in your `./hack/preview.env`.
 Alternatively, to use GitHub webhook set `PAC_GITHUB_TOKEN` with [required permissions](https://pipelinesascode.com/docs/install/github_webhook/#create-github-personal-access-token) or make sure that `MY_GITHUB_TOKEN` set and has the required permissions.
 Then run:
 
