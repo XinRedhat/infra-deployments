@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 
 PAC_NAMESPACE='openshift-pipelines'
 PAC_SECRET_NAME='pipelines-as-code-secret'
