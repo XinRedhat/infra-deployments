@@ -1,0 +1,38 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: pr-restriction
+  namespace: rhtap-promotion-staging
+spec:
+  description: |
+    check if the file changes in pull request meet the restriction
+  results:
+    - name: is_valid
+      description: whether the pull request is valid
+  workspaces:
+    - name: shared-file-path
+  steps:
+    - name: validate-pr-restriction
+      image: registry.access.redhat.com/ubi8/go-toolset:1.19.10-10.1692783630
+      workingDir: $(workspaces.shared-file-path.path)
+      script: |
+        #!/usr/bin/env bash
+        
+        files=$(cat 'updated_files.txt')
+        
+        for file in $files; do
+          #1. when changes are out of promotion-candidates directory, then reject the pr
+          if [[ $file != *"promotion-candidates"* ]]; then
+            echo -n "False" > $(results.is_valid.path)
+            exit 0
+          fi
+
+          #2. When changes are for production promotion-candidates in a single pr, then reject the pr
+          if [[ $file == *"production/promotion-candidates"* ]]; then
+            echo -n "False" > $(results.is_valid.path)
+            exit 0
+          fi
+        done
+
+        echo -n "True" > $(results.is_valid.path)
+
